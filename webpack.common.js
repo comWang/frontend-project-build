@@ -36,7 +36,7 @@ const createPluginInstance = (entryList=[])=>{
             filename:item.filename?`${item.filename}.html`:`${item}.html`,
             template:item.template?`./public/${item.template}`:'./public/template.html',
             title:item.title?item.title:item,
-            chunks:[`./js/${item.filename?item.filename:item}`,'./js/extractedJS','./js/vendors','./js/runtime',devMode?`./css/[id].css`:`./css/[id].[contenthash].css`] 
+            chunks:[`./js/${item.filename?item.filename:item}`,'./js/extractedJS','./js/vendors','./js/main','./js/runtime',devMode?`./css/[id].css`:`./css/[id].[contenthash].css`] 
         });
     });
 };
@@ -67,19 +67,25 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                use: [
-                    {loader: 'style-loader'}, 
-                    {loader: 'css-loader'}, 
-                    {loader: 'less-loader'}
-                ]
+                use: ['style-loader','css-loader','postcss-loader','less-loader']
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use:'file-loader'
+                use:{
+                    loader:'file-loader',
+                    options:{
+                        name: 'public/fonts/[name].[ext]'
+                    }
+                }
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
-                use:'file-loader'
+                use:{
+                    loader:'file-loader',
+                    options:{
+                        name: 'public/images/[name].[ext]'
+                    }
+                }
             }
         ]
     },
@@ -93,18 +99,23 @@ module.exports = {
         },
         splitChunks:{
             cacheGroups:{
-                //引入的包、库
+                //vue相关框架
+                main:{
+                    test: /[\\/]node_modules[\\/]vue.*/,
+                    name: './js/main',
+                    chunks:'all'
+                },
+                //除Vue-*之外其他框架
                 vendors:{
-                    test: /[\\/]node_modules[\\/]/,
+                    test:/[\\/]node_modules[\\/](?!vue.*)/,
                     name: './js/vendors',
                     chunks:'all'
                 },
                 //业务中可复用的js
                 extractedJS:{
-                    test:/[\\/]src[\\/].*\.js$/,
+                    test:/[\\/]src[\\/].+\.js$/,
                     name:'./js/extractedJS',
-                    chunks:'all',
-                    minSize:20000
+                    chunks:'all'
                 }
                 
             }
