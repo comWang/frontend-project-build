@@ -35,10 +35,7 @@ const autoExtractCss = (entryList,option={}) =>{
   return Object.assign(obj,option);
 };
 
-const say=s=>{
-  console.log(s);
-  return s;
-};
+
 
 
 module.exports = merge(common,{
@@ -76,6 +73,6 @@ module.exports = merge(common,{
             'page1','page2'
           ])
         }
-      }
+    }
  
 });

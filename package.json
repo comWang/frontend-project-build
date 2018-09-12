@@ -1,10 +1,11 @@
 {
   "name": "pro1",
   "version": "1.0.0",
+  "sideEffects":["*.css","*.less","*.sass"],
   "private": true,
   "main": "index.js",
   "scripts": {
-    "dev-build": "webpack --config webpack.dev.js",
+    "dev": "webpack --config webpack.dev.js",
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "eslint": "eslint",
