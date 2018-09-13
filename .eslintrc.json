@@ -5,7 +5,7 @@
         "browser":true,
         "node":true
     },
-    "extends": "eslint:recommended",
+    "extends": "airbnb-base",
     "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
@@ -19,6 +19,7 @@
             "error",
             4
         ],
+        "no-new":"off",
         "linebreak-style": [
             "error",
             "unix"

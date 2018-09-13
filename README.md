@@ -1,34 +1,47 @@
 # VUE前端多页面工程构建（webpack4）
-之前一直用的脚手架，这次自己搭建webpack前端项目，花费了不少心思，于是做个总结。
+之前一直用的脚手架，这次自己搭建webpack前端项目，花费了不少心思，于是做个总结。本文省略了部分基本用法，因为官网上的例子通俗易懂又详细。
 ## 1.用法
-项目结构如下：
+#### 项目结构如下：
 ```
 project
-  |- public
-  |- src
+  |- bulid                   <!-- 这个目录是自动生成的-->
+       |- public
+       |- css
+       |- js
+       |- page1.html             <!-- 插件生成的html文件-->
+       |- page2.html             <!-- 插件生成的html文件-->
+       ...
+  |- public/                 <!-- 存放字体、图片、网页模板等静态资源-->
+  |- src                     <!-- 源码文件夹-->
+       |- components/
+       |- css/
+       |- js/
+       |- page1.js               <!-- 每个页面唯一的VUE实例，绑定到#app-->
+       |- page2.js               <!-- 每个页面唯一的VUE实例，绑定到#app-->
+       ...
   |- package.json
   |- package-lock.json
   |- README.md
 ```
-这只是基本结构，后面因为加了些插件，实际上会多一些配置文件。
-安装依赖
+public文件夹存放一些静态文件，src文件夹存放源码。每个页面通过一个入口文件（page1.js，page2.js,..）生成vue实例，挂载到插件生成的html文件的#app元素上。
+#### 安装依赖
 ``` bash
 $ npm install
 ```
-进入开发模式
+#### 进入开发模式
 ``` bash
 $ npm run start
 ```
 浏览器会打开 `http://localhost:3000`,这时页面一片空白，显示 cannot get几个字。不要慌，在url后面加上 `/page1.html`,回车，便可看见我们的页面。
 这是因为我把开发服务器的主页设置为`index.html`，而本例中页面为 page1.html,page2.html,因此会显示一片空白。
-开发完成了，构建生产版本：
+#### 开发完成了，构建生产版本：
 ``` bash
 $ npm run build
 ```
 这会产生一个build/文件夹，里面的文件都经过优化，服务器响应的资源，就是来自于这个文件夹。
 
 ## 2.介绍
-public文件夹存放一些静态文件，src文件夹存放源码。
+
 ### 2.1 webpack基础配置
 我们的开发分为生产环境和开发环境，因此需要有2份webpack的配置文件（可能你会想用env环境变量，然后用3目运算符根据env的值返回不同值。然而这种方法在webpack导出模块的属性中无效，我试过~~~）。这里我们拆分成3个文件，其中`webpack.common.js`是常规的配置，在两种环境下都会用到，`webpack.dev.js`和`webpack.prod.js`则是在2种环境下的特有配置。这里用到 `webpack-merge`这个包，将公共配置和特有配置进行合成。
 - webpack.common.js
@@ -58,7 +71,7 @@ module.exports = merge(common,{
         chunkFilename:'[name].js'
     },
 
-    resolve: { alias: { 'vue': 'vue/dist/vue.js' } }
+    resolve: { alias: { vue: 'vue/dist/vue.js' } }
 });
 ```
 vue分为开发版本和生产版本，最后一行是根据路径指定使用哪个版本
@@ -75,7 +88,7 @@ module.exports = merge(common,{
         filename:'[name].[contenthash].js',
         chunkFilename:'[name].[contenthash].js'
     },
-    resolve: { alias: { 'vue': 'vue/dist/vue.min.js' } },
+    resolve: { alias: { vue: 'vue/dist/vue.min.js' } },
    
 ```
 在production环境下，我们使用了哈希值便于[缓存](https://webpack.js.org/guides/caching/)，以后往生产环境下添加其他资源都会如此。
@@ -149,13 +162,13 @@ module.exports = {
 };
 ```
 runtimeChunk包含了一些webapck的样板文件，使得你在不改变源文件内容的情况下打包，哈希值仍然改变，因此我们把他单独提取出来，[点这儿](https://webpack.js.org/guides/caching/)了解更多。
-cacheGroups用于提取公共部分，webpack会将（`模块的绝对路径||模块名`）尝试进行test的匹配 。还可以定义被提取的部分应该满足[哪些](https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks)条件，比如模块最小应该多大尺寸、至少被导入进多少个chunk等。默认在打包前模块不小于30kb才被会分割。
+cacheGroups用于提取公共模块，test会尝试匹配（`模块的绝对路径||模块名`），返回值为true且满足[条件](https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks)的模块会被分割。满足的条件可自定义，比如模块最小应该多大尺寸、至少被导入进多少个chunk等。默认在打包前模块不小于30kb才被会分割。
 ## 4.树抖动
 在package.json里加入
 ``` javascript
 "sideEffects",["*.css"]
 ```
-该数组之外的文件将会受到树抖动的影响----未使用的代码将会从export中删除。这将大大减少无用代码。值得一提的是，所有css文件（包括.less,.sass）都必须放进来，否则会出现模块解析错误，之前我就这样被坑过，后来好不容易才找到原因。其实[文档](https://webpack.js.org/guides/tree-shaking/)说的很详细，当初看的不够仔细忽略了~
+该数组之外的文件将会受到[树抖动](https://webpack.js.org/guides/tree-shaking/)的影响——未使用的代码将会从export导出对象中剔除。这将大大减少无用代码。值得一提的是，所有css文件（包括.less,.sass）都必须放进来，否则会出现模块解析错误，之前我就这样被坑过，后来好不容易才找到原因。其实文档说的很详细，当初看的不够仔细忽略了~（PS:新版配置已删除此选项，因为树抖动会导致vue单文件组件里的style[scoped]样式丢失，尚未找到原因...）
 ## 5. 插件的使用
 ### 5.1 clean-webpack-plugin
 每次打包后都会生成新的文件，这可能会导致无用的旧文件堆积，对于这些无用文件自己一个个删太麻烦，这个插件会在每次打包前自动清理。
@@ -179,7 +192,8 @@ const createPluginInstance = (entryList=[])=>{
                 `./js/${ item.filename?item.filename:item }`,
                 './js/extractedJS','./js/vendors',
                 './js/main',
-                './js/runtime',devMode?`./css/[id].css`:`./css/[id][contenthash].css`] 
+                './js/runtime',
+                devMode?`./css/[id].css`:`./css/[id][contenthash].css`，] 
         });
     });
 };
@@ -257,7 +271,7 @@ optimization: {
         ]
     }
 ```
-## 6.开发服务器、热模块替换
+## 6.开发服务器、热模块替换 (development)
 webpack.dev.js中增加如下内容即可：
 ``` javascript
 //...省略其他内容

@@ -1,7 +1,6 @@
 {
   "name": "pro1",
   "version": "1.0.0",
-  "sideEffects":["*.css","*.less","*.sass"],
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -28,6 +27,8 @@
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.0",
     "eslint": "^5.5.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
     "less": "^3.8.1",
@@ -41,12 +42,13 @@
     "vue-loader": "^15.4.1",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.5.17",
+    "webpack-dev-server": "^3.1.7",
     "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.7",
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
     "vue": "^2.5.17"
+
   }
 }
