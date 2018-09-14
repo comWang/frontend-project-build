@@ -3,122 +3,130 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const devMode = process.env.NODE_ENV !=='production';
 
-//需要被打包入口文件数组
-//数组元素类型 {string|object}
-//string:将以默认规则生成bundle
-//object{filename|title|template} 生成的bundle.html的文件名|title标签内容|路径 /public 下的模板文件(需指定文件后缀)
+// 需要被打包入口文件数组
+// 数组元素类型 {string|object}
+// string:将以默认规则生成bundle
+// object{filename|title|template} 生成的bundle.html的文件名|title标签内容|路径 /public 下的模板文件(需指定文件后缀)
 const entryList = [
     'page1',
-    'page2'
+    'page2',
 ];
 
 
 /**
- * @param {array} entryList 
+ * @param {array} entryList
  * @param {object} option:可选  entry常规的配置对象,需自己配置属性名及入口文件名
  */
-const createEntry = (entryList=[],option={}) =>{
-    let obj = {};
-    entryList.forEach(item=>{
-        let name = item.filename?'./js/'+item.filename: './js/'+item;
-        obj[name] = path.resolve(__dirname,'./src',`./${item}.js`);
+const createEntry = (list = [], option = {}) => {
+    const obj = {};
+    list.forEach((item) => {
+        const name = item.filename ? `./js/${item.filename}` : `./js/${item}`;
+        obj[name] = path.resolve(__dirname, './src', `./${item}.js`);
     });
-    return Object.assign(obj,option);
+    return Object.assign(obj, option);
 };
 
 
-//生成HtmlWebpackPlugin插件的实例
-const createPluginInstance = (entryList=[])=>{
-    if(typeof HtmlWebpackPlugin!=='function')throw new Error('HtmlWebpackPlugin is not defined!');
-    return entryList.map( item =>{
-        if(typeof item!=='string'&& typeof item!=='object')throw new Error('参数类型错误');
+// 生成HtmlWebpackPlugin插件的实例
+const createPluginInstance = (list = []) => (
+    list.map((item) => {
+        if (typeof item !== 'string' && typeof item !== 'object') throw new Error('参数类型错误');
         return new HtmlWebpackPlugin({
-            filename:item.filename?`${item.filename}.html`:`${item}.html`,
-            template:item.template?`./public/${item.template}`:'./public/template.html',
-            title:item.title?item.title:item,
-            chunks:[`./js/${item.filename?item.filename:item}`,'./js/extractedJS','./js/vendors','./js/main','./js/runtime',devMode?`./css/[id].css`:`./css/[id].[contenthash].css`] 
+            filename: item.filename ? `${item.filename}.html` : `${item}.html`,
+            template: item.template ? `./public/${item.template}` : './public/template.html',
+            title: item.title ? item.title : item,
+            chunks: [
+                `./js/${item.filename ? item.filename : item}`,
+                './js/extractedJS',
+                './js/vendors',
+                './js/main',
+                './js/runtime',
+                './css/styles.css',
+                devMode ? './css/[id].css' : './css/[id].[contenthash].css',
+            ],
         });
-    });
-};
-
-
+    })
+);
 
 
 module.exports = {
-    entry:createEntry(entryList),
-    output:{
-        path:path.resolve(__dirname , './build')
+    entry: createEntry(entryList),
+    output: {
+        path: path.resolve(__dirname, './build'),
     },
-    module:{
-        rules:[
+    module: {
+        rules: [
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
+                        presets: ['@babel/preset-env'],
+                    },
+                },
             },
             {
-                test:/\.vue$/,
-                use:'vue-loader'
-            },
-            {
-                test: /\.less$/,
-                use: ['style-loader','css-loader','postcss-loader','less-loader']
+                test: /\.vue$/,
+                use: 'vue-loader',
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use:{
-                    loader:'file-loader',
-                    options:{
-                        name: 'public/fonts/[name].[ext]'
-                    }
-                }
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: 'public/fonts/[name].[ext]',
+                    },
+                },
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
-                use:{
-                    loader:'file-loader',
-                    options:{
-                        name: 'public/images/[name].[ext]'
-                    }
-                }
-            }
-        ]
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: 'public/images/[name].[ext]',
+                    },
+                },
+            },
+        ],
     },
-    plugins:createPluginInstance(entryList).concat([
-        //vue SFCs单文件支持
-        new VueLoaderPlugin()
+    plugins: createPluginInstance(entryList).concat([
+        // vue SFCs单文件支持
+        new VueLoaderPlugin(),
     ]),
-    optimization:{
-        runtimeChunk:{
-            name:'./js/runtime'
+    optimization: {
+        runtimeChunk: {
+            name: './js/runtime',
         },
-        splitChunks:{
-            cacheGroups:{
-                //vue相关框架
-                main:{
-                    test: /[\\/]node_modules[\\/]vue.*/,
+        splitChunks: {
+            minSize: 30000,
+            cacheGroups: {
+                // vue
+                // 根据绝对路径匹配
+                main: {
+                    test: /[\\/]node_modules[\\/]vue[\\/]/,
                     name: './js/main',
-                    chunks:'all'
+                    chunks: 'all',
                 },
-                //除Vue-*之外其他框架
-                vendors:{
-                    test:/[\\/]node_modules[\\/](?!vue.*)/,
+                // 除Vue之外其他框架
+                vendors: {
+                    test: /[\\/]node_modules[\\/](?!vue)[\\/]/,
                     name: './js/vendors',
-                    chunks:'all'
+                    chunks: 'all',
                 },
-                //业务中可复用的js
-                extractedJS:{
-                    test:/[\\/]src[\\/].+\.js$/,
-                    name:'./js/extractedJS',
-                    chunks:'all'
-                }
-                
-            }
-        }
-    }
+                // 业务中可复用的js
+                extractedJS: {
+                    test: /[\\/]src[\\/].+\.js$/,
+                    name: './js/extractedJS',
+                    chunks: 'all',
+                },
+                // 分割大的css文件
+                // 根据文件名匹配
+                styles: {
+                    test: /\.(css|less)$/,
+                    name: './css/styles',
+                },
+            },
+        },
+    },
 };

@@ -6,33 +6,6 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const common = require('./webpack.common.js');
 
-function recursiveIssuer(m) {
-    if (m.issuer) {
-        return recursiveIssuer(m.issuer);
-    } if (m.name) {
-        return m.name;
-    }
-    return false;
-}
-
-
-const autoExtractCss = (entryList, option = {}) => {
-    if (!Array.isArray(entryList)) throw new Error('type wrong');
-    const obj = {};
-    entryList.forEach((item) => {
-        const fm = item.filename ? item.filename : item;
-        obj[fm] = {
-            name: fm,
-            test: (m, c, entry = fm) => m.constructor.name === 'CssModule' && recursiveIssuer(m) === entry,
-            chunks: 'all',
-            enforce: true,
-        };
-    });
-
-    return Object.assign(obj, option);
-};
-
-
 module.exports = merge(common, {
     mode: 'production',
     output: {
@@ -43,15 +16,15 @@ module.exports = merge(common, {
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
+                test: /\.(css|less)$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
             },
         ],
     },
     plugins: [
         new CleanWebpackPlugin('build'),
         new MiniCssExtractPlugin({
-            filename: './css/[id].[contenthash].css',
+            filename: './css/[contenthash].css',
         }),
         new webpack.HashedModuleIdsPlugin(),
     ],
@@ -63,12 +36,6 @@ module.exports = merge(common, {
             }),
             new OptimizeCSSAssetsPlugin(),
         ],
-        splitChunks: {
-            cacheGroups: autoExtractCss([
-                'page1',
-                'page2',
-            ]),
-        },
     },
 
 

@@ -20,8 +20,8 @@ module.exports = merge(common, {
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: ['vue-style-loader', 'css-loader', 'postcss-loader'],
+                test: /\.(css|less)$/,
+                use: ['vue-style-loader', 'css-loader', 'postcss-loader', 'less-loader'],
             },
         ],
     },
