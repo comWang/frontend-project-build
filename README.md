@@ -297,7 +297,7 @@ const createPluginInstance = (list = []) => (
 ```
 默认会将所有的入口文件，代码分割后的文件打包进一个html文件里，通过指定`chunks`属性来告诉插件`只包含`哪些块，或者exludeChunks指定不应包含那些chunks。这里有个小问题，我们无法让文件刚好只包含他需要的块。若想不包含未使用的chunks，只能根据实际情况手动配置，用这个函数批量生成的文件，总会包含所有的公共打包文件。
 ### 5.3 mini-css-extract-plugin (prooduction)
-该插件用于提取js文件中的css到单独的css文件中。这里我们[基于入口文件](https://webpack.js.org/plugins/mini-css-extract-plugin/#minimizing-for-production)产生多个css文件。
+该插件用于提取js文件中的css到单独的css文件中。
 ``` javascript
 //webpack.prod.js
 //...省略其他内容
