@@ -1,7 +1,6 @@
 {
   "name": "pro1",
   "version": "1.0.0",
-  "sideEffects":["*.css","*.less"],
   "private": true,
   "main": "index.js",
   "scripts": {

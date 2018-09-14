@@ -110,7 +110,7 @@ module.exports = {
                 },
                 // 除Vue之外其他框架
                 vendors: {
-                    test: /[\\/]node_modules[\\/](?!vue)[\\/]/,
+                    test: /[\\/]node_modules[\\/]?!(vue)[\\/]/,
                     name: './js/vendors',
                     chunks: 'all',
                 },
@@ -124,7 +124,7 @@ module.exports = {
                 // 根据文件名匹配
                 styles: {
                     test: /\.(css|less)$/,
-                    name: './css/styles',
+                    name: './css/styles.css',
                 },
             },
         },
