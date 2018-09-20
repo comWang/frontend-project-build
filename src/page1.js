@@ -8,7 +8,7 @@ new Vue({
     data: {
         msg: 'Front end',
     },
-    template: '<div class="a1 bg-blue"></div>',
+    template: '<div class="a1 bg-blue"><welcome /></div>',
     components: {
         welcome,
     },

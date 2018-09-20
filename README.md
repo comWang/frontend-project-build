@@ -235,13 +235,13 @@ module.exports = {
             cacheGroups:{
                 //vue相关框架
                 main:{
-                    test: /[\\/]node_modules[\\/]vue.*/,
+                    test: /[\\/]node_modules[\\/]vue[\\/]/,
                     name: './js/main',
                     chunks:'all'
                 },
                 //除Vue-*之外其他框架
                 vendors:{
-                    test:/[\\/]node_modules[\\/](?!vue.*)/,
+                    test: /[\\/]node_modules[\\/]?!(vue)[\\/]/,
                     name: './js/vendors',
                     chunks:'all'
                 },
@@ -262,9 +262,9 @@ cacheGroups用于提取复用的模块，test会尝试匹配（`模块的绝对�
 ## 4.树抖动
 在package.json里加入
 ``` javascript
-"sideEffects"：["*.css","*.less","*.sass"]
+"sideEffects"：["*.css","*.less","*.sass",".vue"]
 ```
-该数组之外的文件将会受到[树抖动](https://webpack.js.org/guides/tree-shaking/)的影响——未使用的代码将会从export导出对象中剔除。这将大大减少无用代码。值得一提的是，所有css文件（包括.less,.sass）都必须放进来，否则会出现样式丢失，之前我就这样被坑过，后来好不容易才找到原因。其实文档说的很详细，当初看的不够仔细忽略了~
+该数组之外的文件将会受到[树抖动](https://webpack.js.org/guides/tree-shaking/)的影响——未使用的代码将会从export导出对象中剔除。这将大大减少无用代码。值得一提的是，所有css文件（包括.less,.sass）以及vue的单文件组件都必须放进来，否则会出现样式丢失，之前我就这样被坑过，后来好不容易才找到原因。其实文档说的很详细，当初看的不够仔细忽略了~
 ## 5. 插件的使用
 ### 5.1 clean-webpack-plugin
 每次打包后都会生成新的文件，这可能会导致无用的旧文件堆积，对于这些无用文件自己一个个删太麻烦，这个插件会在每次打包前自动清理。实际中，我们不想在开发环境下清理掉build命令生成的文件，因此只在生产环境使用了这个插件。

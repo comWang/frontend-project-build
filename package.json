@@ -1,14 +1,18 @@
 {
   "name": "pro1",
   "version": "1.0.0",
+  "sideEffects": [
+    "*.css",
+    "*.less",
+    "*.vue"
+  ],
   "private": true,
   "main": "index.js",
   "scripts": {
     "dev": "webpack --config webpack.dev.js",
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "eslint": "eslint",
-    "flow": "flow"
+    "eslint": "eslint"
   },
   "author": "",
   "license": "ISC",
