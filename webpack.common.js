@@ -20,8 +20,9 @@ const entryList = [
 const createEntry = (list = [], option = {}) => {
     const obj = {};
     list.forEach((item) => {
+        const filename = item.filename ? item.filename : item;
         const name = item.filename ? `./js/${item.filename}` : `./js/${item}`;
-        obj[name] = path.resolve(__dirname, './src', `./${item}.js`);
+        obj[name] = path.join(__dirname, './src', `./${filename}.js`);
     });
     return Object.assign(obj, option);
 };
@@ -84,7 +85,8 @@ module.exports = {
                 use: {
                     loader: 'file-loader',
                     options: {
-                        name: 'public/images/[name].[ext]',
+                        name: '[path][name].[ext]',
+                        publicPath: '.',
                     },
                 },
             },

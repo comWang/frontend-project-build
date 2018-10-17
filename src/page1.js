@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import welcome from './components/welcome.vue';
-import './css/common/bg-blue.less';
+import './css/common/bg.less';
 import './css/page1.less';
 
 new Vue({

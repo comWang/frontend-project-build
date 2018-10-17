@@ -348,4 +348,12 @@ public用于存放静态资源，打包后也会在build/下创建一个同名�
     background-image:url(/public/images/1.jpg)
 }
 ```
-这样通过 http/https 打开的时候就能正常使用，如果是以文件形式打开（比如打包后双击page1.html），会发现浏览器显示无法找到资源。通过导入图片作为变量引用（`import name from path`），既可使用绝对路径，也可使用相对路径。
+这样通过 http/https 打开的时候就能正常使用，如果是以文件形式打开（比如打包后双击page1.html），会发现浏览器显示无法找到资源。通过导入图片作为变量引用（`import name from path`），或者使用less，sass等预处理器时，涉及到图片路径，都要使用相对路径。
+``` less
+<!-- src/css/page1.css -->
+.bg-img {
+    background-image:url(/public/images/1.jpg);
+    width: image-width(../../public/images/1.jpg);
+}
+```
+至于以上结论的原因，在stackoverflow上有个回答，说是目前预处理器(less,sass)在设计上只支持相对路径引入图片。如果url也使用相对路径（url(./a.jpg)），在编译后总会加上文件路径，例如最后把less编译的css输出到css/文件夹下，最终引入路径会变成css/a.jpg。

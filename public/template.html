@@ -6,7 +6,6 @@
         <title><%= htmlWebpackPlugin.options.title %></title>
         <script>
             (function(){
-                var resizeEvent = window.orientationchange? 'orientationchange' : 'resize';
                 function resetViewPort (){
                     var meta = document.querySelector('meta[name = viewport]');
                     if(!meta){
@@ -19,7 +18,6 @@
                     meta.setAttribute("content",content);
                 };
                 window.addEventListener('DOMContentLoaded',resetViewPort);
-                window.addEventListener(resizeEvent,resetViewPort);
             })()
         </script>
     </head>

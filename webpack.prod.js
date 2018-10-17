@@ -24,7 +24,7 @@ module.exports = merge(common, {
     plugins: [
         new CleanWebpackPlugin('build'),
         new MiniCssExtractPlugin({
-            filename: './css/[contenthash].css',
+            filename: './css/[id].[contenthash].css',
         }),
         new webpack.HashedModuleIdsPlugin(),
     ],

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class='bg-img'>
     <h2 class="red">Goodbye ! {{goodbye}}</h2>
     <p>expect see you soon </p>
   </div>
@@ -16,8 +16,10 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang='less'>
+@import '../css/common/bg.less';
 .red{
   color: red
 }
+
 </style>
