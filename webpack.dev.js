@@ -16,6 +16,7 @@ module.exports = merge(common, {
         contentBase: path.resolve(__dirname, './build'),
         port: 3000,
         noInfo: true,
+        host: '192.168.18.145',
     },
     module: {
         rules: [

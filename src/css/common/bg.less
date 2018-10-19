@@ -1,0 +1,5 @@
+@blue :rgb(130, 130, 228);
+@img: '/public/images/2x/1.jpg';
+@_img: '../../../public/images/2x/1.jpg';
+.bg-blue{ background-color: @blue;}
+.bg-img {background-image: url(@img);min-width:image-width(@_img);min-height: image-height(@_img)}
