@@ -11,12 +11,13 @@ module.exports = merge(common, {
         chunkFilename: '[name].js',
     },
     devServer: {
+        open: true,
         index: 'index.html',
         hot: true,
         contentBase: path.resolve(__dirname, './build'),
         port: 3000,
         noInfo: true,
-        host: '192.168.18.145',
+        host: 'localhost',
     },
     module: {
         rules: [

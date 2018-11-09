@@ -24,7 +24,7 @@ module.exports = merge(common, {
     plugins: [
         new CleanWebpackPlugin('build'),
         new MiniCssExtractPlugin({
-            filename: './css/[id].[contenthash].css',
+            filename: './static/css/[contenthash].css',
         }),
         new webpack.HashedModuleIdsPlugin(),
     ],
@@ -33,6 +33,7 @@ module.exports = merge(common, {
             new UglifyJsPlugin({
                 cache: true,
                 parallel: true,
+                sourceMap: true,
             }),
             new OptimizeCSSAssetsPlugin(),
         ],

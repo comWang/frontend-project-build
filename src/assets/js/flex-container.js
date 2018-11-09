@@ -71,7 +71,7 @@ class FlexContainer {
             this.end.x = touch.pageX;
             this.end.y = touch.pageY;
             const val = this.end[this.dir] - this.start[this.dir];
-            const shift = val > 50 ? 50 + FlexContainer.bound(val - 50) : val;
+            const shift = FlexContainer.bound(val);
             this.shift = this.changeRelPosition(shift);
         });
 
@@ -79,20 +79,24 @@ class FlexContainer {
             this.end.x = e.changedTouches[0].pageX;
             this.end.y = e.changedTouches[0].pageY;
             let timer = null;
+            // 控制下拉后的回弹速度,越小越快
+            const max = 30;
+            const A = this.shift / (max * max);
+            let progress = 0;
             const back = () => {
-                this.shift -= 20;
-                if (this.shift <= -20) return cancelAnimationFrame(timer);
-                this.changeRelPosition(this.shift >= 0 ? this.shift : 0);
+                if (progress > max) {
+                    // 重置回调状态
+                    this.hooks.pos1.status = false;
+                    this.hooks.pos2.status = false;
+                    this.hooks.pos3.status = false;
+                    return cancelAnimationFrame(timer);
+                }
+                this.changeRelPosition(A * (-progress + max) * (-progress + max));
+                progress += 1;
                 timer = requestAnimationFrame(back);
                 return 0;
             };
             timer = requestAnimationFrame(back);
-            // const end = this.end[this.dir];
-            // const start = this.start[this.dir];
-            // const timer = requestAnimationFrame(() => {
-            //     if (end <= start) cancelAnimationFrame(timer);
-            //     this.end[this.dir] = this.changeRelPosition(end, start);
-            // });
         });
     }
 

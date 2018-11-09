@@ -7,6 +7,7 @@
 
 
 <script>
+import '../assets/images/1.jpg';
   export default {
       data:function () {
         return {
@@ -17,7 +18,7 @@
 </script>
 
 <style scoped lang='less'>
-@import '../css/common/bg.less';
+@import '../assets/less/bg.less';
 .red{
   color: red
 }

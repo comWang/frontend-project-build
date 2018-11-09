@@ -1,6 +1,5 @@
 import Vue from 'vue';
-import goodbye from './components/goodbye.vue';
-import '../public/images/2x/1.jpg';
+import goodbye from '../components/goodbye.vue';
 
 
 new Vue({
