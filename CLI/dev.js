@@ -2,8 +2,8 @@ const path = require('path');
 const Webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const dataPromise = require('./WebpackPromiseData');
-const dev = require('./webpack.dev');
+const dataPromise = require('../WebpackPromiseData');
+const dev = require('../webpack.dev');
 
 dataPromise.then((opt) => {
     const entry = {};

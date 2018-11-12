@@ -1,6 +1,10 @@
 {
   "name": "pro1",
   "version": "1.0.0",
+  "bin": {
+    "dev": "./CLI/dev.js",
+    "dist": "./CLI/build.js"
+  },
   "sideEffects": [
     "*.css",
     "*.less",
@@ -9,10 +13,9 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
-    "serve": "http-server ./build",
-    "eslint": "eslint"
+    "start": "node ./CLI/dev.js",
+    "build": "node ./CLI/dist.js",
+    "serve": "http-server ./build"
   },
   "author": "",
   "license": "ISC",

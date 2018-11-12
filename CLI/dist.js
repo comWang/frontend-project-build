@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const dataPromise = require('./WebpackPromiseData');
-const prod = require('./webpack.prod');
+const dataPromise = require('../WebpackPromiseData');
+const prod = require('../webpack.prod');
 
 
 dataPromise.then((opt) => {
