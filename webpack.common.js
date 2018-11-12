@@ -47,7 +47,7 @@ module.exports = {
     ],
     optimization: {
         runtimeChunk: {
-            name: './static/js/runtime',
+            name: './assets/js/runtime',
         },
         splitChunks: {
             minSize: 30000,
@@ -55,19 +55,19 @@ module.exports = {
                 // 根据绝对路径匹配vue
                 main: {
                     test: /[\\/]node_modules[\\/]vue[\\/]/,
-                    name: './static/js/main',
+                    name: './assets/js/main',
                     chunks: 'all',
                 },
                 // 除Vue之外其他框架
                 vendors: {
                     test: /[\\/]node_modules[\\/]?!(vue)[\\/]/,
-                    name: './static/js/vendors',
+                    name: './assets/js/vendors',
                     chunks: 'all',
                 },
                 // 分割公共css文件
                 styles: {
                     test: /[\\/]common[\\/](css|less)[\\/]\.(css|less)$/,
-                    name: './static/css/styles.css',
+                    name: './assets/css/styles.css',
                 },
             },
         },

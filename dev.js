@@ -30,10 +30,10 @@ dataPromise.then((opt) => {
             title: a.title || a.name,
             chunks: [
                 `.${extraPath}js/${a.name}`,
-                './static/js/vendors',
-                './static/js/main',
-                './static/js/runtime',
-                './static/css/styles.css',
+                './assets/js/vendors',
+                './assets/js/main',
+                './assets/js/runtime',
+                './assets/css/styles.css',
             ],
         });
     });
