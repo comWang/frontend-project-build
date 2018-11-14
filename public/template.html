@@ -2,20 +2,19 @@
 <html>
     <head>
         <meta charset="utf-8" language="zh-cn-hans">
-        <meta name="viewport" content="width=device-width,maximum-scale=1,user-scalable=no">
         <title><%= htmlWebpackPlugin.options.title %></title>
         <script>
             (function(){
                 function resetViewPort (){
-                    var meta = document.querySelector('meta[name = viewport]');
-                    if(!meta){
-                        metaEle = document.createElement("meta");
-                        var meta = document.querySelector("meta");
-                        document.querySelector("head").insertBefore(metaEle,meta);
+                    var viewport = document.querySelector('meta[name = viewport]');
+                    if(!viewport){
+                        viewport = document.createElement("meta");
+                        var head = document.querySelector("head");
+                        head.insertBefore(viewport,head.firstChild);
                     }
                     var ratio = window.devicePixelRatio||1;
-                    var content = 'width=device-width,initial-scale='+1/ratio+',maximum-scale=1,user-scalable=no';
-                    meta.setAttribute("content",content);
+                    var content = 'width=device-width,initial-scale='+ Math.round(100/ratio) / 100 +',maximum-scale=1,user-scalable=no';
+                    viewport.setAttribute("content",content);
                 };
                 window.addEventListener('DOMContentLoaded',resetViewPort);
             })()

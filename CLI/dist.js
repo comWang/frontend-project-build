@@ -25,7 +25,7 @@ dataPromise.then((opt) => {
         extraPath = extraPath.replace(/\\/g, '/');
         return new HtmlWebpackPlugin({
             filename: `.${extraPath}${a.name}.html`,
-            template: a.template ? `./public/${a.template}` : './public/template-compatible.html',
+            template: a.template ? `./public/${a.template}` : './public/template.html',
             title: a.title || a.name,
             chunks: [
                 `.${extraPath}js/${a.name}`,
