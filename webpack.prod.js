@@ -4,11 +4,13 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const StatsPlugin = require('stats-webpack-plugin')
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
     mode: 'production',
     devtool: 'source-map',
+    profile: true,
     output: {
         filename: '[name].[contenthash].js',
         chunkFilename: '[name].[contenthash].js',
@@ -23,6 +25,9 @@ module.exports = merge(common, {
         ],
     },
     plugins: [
+        new StatsPlugin('/analyse/stats.json', {
+            chunkModules: true,
+        }),
         new CleanWebpackPlugin('build'),
         new MiniCssExtractPlugin({
             filename: './assets/css/[contenthash].css',

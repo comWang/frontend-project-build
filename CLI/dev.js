@@ -44,11 +44,13 @@ dataPromise.then((opt) => {
     // Node API 下devServer的配置在这传递才有效
     const devServerOptions = Object.assign({}, webpackConfig.devServer, {
         open: true,
+        overlay: true,
+        hot: true,
         stats: {
             colors: true,
             error: true,
-            modules: true,
-            assets: true,
+            modules: false,
+            assets: false,
             entrypoints: false,
             hash: false,
             version: true,

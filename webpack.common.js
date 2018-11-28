@@ -9,7 +9,7 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -66,7 +66,7 @@ module.exports = {
                 },
                 // 分割公共css文件
                 styles: {
-                    test: /[\\/]common[\\/](css|less)[\\/]\.(css|less)$/,
+                    test: /[\\/]assets\.+(css|less)$/,
                     name: './assets/css/styles.css',
                 },
             },
