@@ -1,18 +1,25 @@
 <template>
-    <div class="wrap">
+    <div rel="root" class="flex-container">
+      <div class="wrap">
         <h2 class="green ctr">welcome {{welcome}}</h2>
-        <p class="ctr">we`re waiting for you!</p>
+        <p class="ctr">滑动以下拉</p>
+    </div>
     </div>
 </template>
 
 
 <script>
+import FlexC from '../assets/js/flex-container';
+
   export default {
-      data:function () {
+      data() {
         return {
-            welcome:'sweet'
+            welcome:'sweet',
         }
-      }
+      },
+      mounted(){
+        new FlexC({rel:'root'});
+      },
   }
 </script>
 

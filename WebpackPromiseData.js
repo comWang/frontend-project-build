@@ -80,7 +80,7 @@ const walkDirRecur = root => (new Promise((resolve, reject) => {
                     fileList.push({ name, path: absPath });
                     suc(f);
                     // 只允许名字带有 page 的文件夹
-                } else if (!f.isFile && /page/.test(f.name)) suc(walkDirRecur(path.join(root, f.name)));
+                } else if (!f.isFile && !/(assets)|(components)|(css)|(less)/.test(f.name)) suc(walkDirRecur(path.join(root, f.name)));
                 // 其他条件保证成功状态(即其他条件不影响结果)
                 else suc('ok');
             })));

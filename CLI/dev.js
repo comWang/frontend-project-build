@@ -26,7 +26,7 @@ dataPromise.then((opt) => {
         extraPath = extraPath.replace(/\\/g, '/');
         return new HtmlWebpackPlugin({
             filename: `.${extraPath}${a.name}.html`,
-            template: a.template ? `./public/${a.template}` : './public/template.html',
+            template: a.template ? `./public/${a.template}` : './public/template-compatible.html',
             title: a.title || a.name,
             chunks: [
                 `.${extraPath}js/${a.name}`,
@@ -47,11 +47,11 @@ dataPromise.then((opt) => {
         stats: {
             colors: true,
             error: true,
-            modules: false,
-            assets: false,
+            modules: true,
+            assets: true,
             entrypoints: false,
             hash: false,
-            version: false,
+            version: true,
         },
     });
     const complier = Webpack(webpackConfig);
