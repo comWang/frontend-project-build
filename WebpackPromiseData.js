@@ -10,8 +10,7 @@ const readFileList = dir => (
     new Promise((resolve, reject) => {
         fs.readdir(dir, { withFileTypes: true }, (err, files) => {
             if (err) {
-                reject(err);
-                console.log('读取文件目录失败');
+                reject(`读取文件目录失败:${err}`);
             } else {
                 const result = files.map(file => ({
                     name: file.name,
@@ -69,7 +68,7 @@ const readFirstLine = absName => (new Promise((resolve, reject) => {
 // 递归遍历给定的整个目录
 const walkDirRecur = root => (new Promise((resolve, reject) => {
     fs.stat(root, async (err, stats) => {
-        if (err) reject(new Error(`读取文件失败: ${err}`));
+        if (err) reject(`读取文件失败! ${err}`);
         else if (stats.isDirectory()) {
             const files = await readFileList(root);
             const promises = files.map(f => (new Promise(async (suc) => {
@@ -94,8 +93,11 @@ const walkDirRecur = root => (new Promise((resolve, reject) => {
 
 
 const produceConfig = async (root) => {
-    console.log('Creating webpack entry,please waiting a moment...');
-    await walkDirRecur(root).catch((err) => { console.error(err); });
+    console.log('\033[33m Creating webpack entry... \033[0m');
+    await walkDirRecur(root).catch((err) => {
+        console.error('\033[31m '+ err + ' \033[0m');
+        throw err;
+    } );
     const promises = fileList.map(file => (new Promise((resolve, reject) => {
         readFirstLine(file.path).then((options) => {
             resolve({
@@ -104,14 +106,14 @@ const produceConfig = async (root) => {
                 title: options.title,
                 template: options.template,
             });
-        }).catch((err) => {
-            console.error('Readline failed: ', err);
-            reject(err);
-        });
+        })
     })));
-    const entryAndOptions = await Promise.all(promises);
+    const entryAndOptions = await Promise.all(promises).catch((err) => {
+        console.error('\033[31m'+ err + ' \033[0m');
+        throw err;
+    } );
     return entryAndOptions;
 };
 
 
-module.exports = produceConfig('./src');
+module.exports = produceConfig;

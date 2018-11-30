@@ -1,5 +1,6 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     output: {
@@ -44,6 +45,7 @@ module.exports = {
     plugins: [
         // vue SFCs单文件支持
         new VueLoaderPlugin(),
+        new CleanWebpackPlugin('build'),
     ],
     optimization: {
         runtimeChunk: {
