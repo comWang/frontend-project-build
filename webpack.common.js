@@ -15,6 +15,7 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         presets: ['@babel/preset-env'],
+                        plugins: ['@babel/plugin-syntax-dynamic-import'],
                     },
                 },
             },
@@ -72,6 +73,13 @@ module.exports = {
                     name: './assets/css/styles.css',
                 },
             },
+        },
+    },
+    resolve: {
+        extensions: ['.wasm', '.mjs', '.js', '.json', '.vue'],
+        alias: {
+            assets: path.resolve(__dirname, './src/assets'),
+            components: path.resolve(__dirname, './src/components'),
         },
     },
 };

@@ -18,7 +18,7 @@ const handler = (percentage, message) => {
     readline.clearLine(process.stdout, 0);
     readline.cursorTo(process.stdout, 0);
     process.stdout.write(info);
-    if (ratio >= 100) console.log('按住Ctrl单击右边以预览 \033[32m' + link + '\033[0m');
+    if (ratio >= 100) console.log('\n按住Ctrl单击右边以预览 \033[32m' + link + '\033[0m');
 };
 
 
@@ -42,7 +42,20 @@ const devConfig = merge(common, {
         rules: [
             {
                 test: /\.(css|less)$/,
-                use: ['vue-style-loader', 'css-loader', 'postcss-loader', 'less-loader'],
+                use: [
+                    'vue-style-loader',
+                    'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: [
+                                require('autoprefixer'),
+                                require('../postcss-unify')({ size: 750 }),
+                            ],
+                        },
+                    },
+                    'less-loader'
+                ],
             },
         ],
     },

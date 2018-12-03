@@ -21,12 +21,25 @@ const prodConfig = merge(common, {
         rules: [
             {
                 test: /\.(css|less)$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: [
+                                require('autoprefixer'),
+                                require('../postcss-unify')({ size: 750 }),
+                            ],
+                        },
+                    },
+                    'less-loader',
+                ],
             },
         ],
     },
     plugins: [
-        new StatsPlugin('/ANALYSE/stats.json', {
+        new StatsPlugin('/Analyse/stats.json', {
             chunkModules: true,
         }),
         new MiniCssExtractPlugin({

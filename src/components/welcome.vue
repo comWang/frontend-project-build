@@ -3,19 +3,30 @@
       <div class="wrap">
         <h2 class="green ctr">welcome {{welcome}}</h2>
         <p class="ctr">滑动以下拉</p>
-    </div>
+        <p class="ctr">插件测试：60% 屏幕宽度</p>
+        <button @click="loadDynamic">点击以动态加载模块</button>
+      </div>
     </div>
 </template>
 
 
 <script>
-import FlexC from '../assets/js/flex-container';
+import FlexC from 'assets/js/flex-container';
 
   export default {
       data() {
         return {
             welcome:'sweet',
         }
+      },
+      methods: {
+        // 动态导入语法演示
+        loadDynamic() {
+          import(/* webpackChunkName: "assets/js/text" */ 'assets/js/text')
+          .then(module => {
+            alert(module.default.text);
+          })
+        },
       },
       mounted(){
         new FlexC({rel:'root'});
@@ -25,7 +36,7 @@ import FlexC from '../assets/js/flex-container';
 
 <style scoped>
 .wrap {
-  width:300px;
+  width:450;
   max-height: 200px;
   margin: auto;
   border: 1px solid #f7f8f8;
@@ -39,4 +50,5 @@ import FlexC from '../assets/js/flex-container';
 .green{
   color: green
 }
+
 </style>
