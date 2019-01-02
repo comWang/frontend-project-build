@@ -7,7 +7,7 @@ const promiseData = require('../WebpackPromiseData');
 const { produceEntry, produceHTML } = require('./autoCreate');
 
 // 请在这里更改端口等信息
-const [https, host, port] = [false, '192.168.0.70', 3000];
+const [https, host, port] = [false, 'localhost', 3000];
 
 
 // 显示编译进度
@@ -79,6 +79,8 @@ module.exports = () => (
             // Object.assign 不能修改数组内部,这里用concat修改
             webpackConfig.plugins = webpackConfig.plugins.concat(plugins);
             resolve(webpackConfig);
-        }).catch((err) => {});
+        }).catch((err) => {
+            console.error(err);
+        });
     })
 );

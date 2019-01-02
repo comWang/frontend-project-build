@@ -2,6 +2,7 @@
     <div rel="root" class="flex-container">
       <div class="wrap">
         <h2 class="green ctr">welcome {{welcome}}</h2>
+        <img :src="a" alt="" style="width:100%">
         <p class="ctr">滑动以下拉</p>
         <p class="ctr">插件测试：60% 屏幕宽度</p>
         <button @click="loadDynamic">点击以动态加载模块</button>
@@ -11,12 +12,14 @@
 
 
 <script>
+import a from 'assets/images/default/a.jpg';
 import FlexC from 'assets/js/flex-container';
 
   export default {
       data() {
         return {
             welcome:'sweet',
+            a,
         }
       },
       methods: {
