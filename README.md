@@ -97,6 +97,9 @@ new Vue({
 按住CTRL + C后结束，再重新打包一次，会发现title已经变了。  
 ![draft2](./public/examples/draft2.jpg)。  
 就是这么简单！不需要修改任何的配置文件，只用专注于项目代码。
+## 版本
+2.0  
+`node version` v10.13.0 LTS
 
 
 
